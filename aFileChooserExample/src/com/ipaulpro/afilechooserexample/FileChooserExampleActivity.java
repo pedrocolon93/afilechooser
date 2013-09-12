@@ -41,8 +41,9 @@ public class FileChooserExampleActivity extends Activity {
 	private static final int REQUEST_CODE = 6384; // onActivityResult request code
 	private static final ArrayList<String> INCLUDE_EXTENSIONS_LIST = new ArrayList<String>();
 	static{
-		INCLUDE_EXTENSIONS_LIST.add(".apk");
-		INCLUDE_EXTENSIONS_LIST.add(".bin");
+		INCLUDE_EXTENSIONS_LIST.add(".jpg");
+		INCLUDE_EXTENSIONS_LIST.add(".png");
+		INCLUDE_EXTENSIONS_LIST.add(".gif");
 	}
 
 	@Override
@@ -78,10 +79,14 @@ public class FileChooserExampleActivity extends Activity {
 	}
 	
 	private void startFileChooserActivity(){
-		startActivityForResult(
-				new Intent(this, FileChooserActivity.class).putStringArrayListExtra(
-						FileChooserActivity.EXTRA_FILTER_INCLUDE_EXTENSIONS, INCLUDE_EXTENSIONS_LIST), 
-						REQUEST_CODE);
+
+		Intent intent = new Intent(this, FileChooserActivity.class);
+	
+		intent.putStringArrayListExtra(
+				FileChooserActivity.EXTRA_FILTER_INCLUDE_EXTENSIONS,
+				INCLUDE_EXTENSIONS_LIST);
+		intent.putExtra(FileChooserActivity.EXTRA_SELECT_FOLDER, true);
+		startActivityForResult(intent, REQUEST_CODE);
 						
 	}
 	

@@ -16,6 +16,9 @@
 
 package com.ipaulpro.afilechooser;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.BroadcastReceiver;
@@ -35,10 +38,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Main Activity that handles the FileListFragments 
  * 
@@ -53,6 +52,8 @@ public class FileChooserActivity extends FragmentActivity implements
     public static final String PATH = "path";
     public static final String EXTRA_FILTER_INCLUDE_EXTENSIONS = 
     		"com.ipaulpro.afilechooser.EXTRA_FILTER_INCLUDE_EXTENSIONS";
+	public static final String EXTRA_SELECT_FOLDER = "com.ipaulpro.afilechooser.EXTRA_SELECT_FOLDER";
+	private boolean mSelectFolder = false;
     private ArrayList<String> mFilterIncludeExtensions = new ArrayList<String>();
 	public static final String EXTERNAL_BASE_PATH = Environment
 			.getExternalStorageDirectory().getAbsolutePath();
@@ -60,7 +61,7 @@ public class FileChooserActivity extends FragmentActivity implements
 	private static final boolean HAS_ACTIONBAR = Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB;
 
 	private FragmentManager mFragmentManager;
-	private BroadcastReceiver mStorageListener = new BroadcastReceiver() {
+	private final BroadcastReceiver mStorageListener = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Toast.makeText(context, R.string.storage_removed, Toast.LENGTH_LONG).show();
@@ -79,6 +80,7 @@ public class FileChooserActivity extends FragmentActivity implements
 		Intent intent = getIntent();
 		if(intent != null){
 			mFilterIncludeExtensions = intent.getStringArrayListExtra(EXTRA_FILTER_INCLUDE_EXTENSIONS);
+			mSelectFolder = intent.getBooleanExtra(EXTRA_SELECT_FOLDER, false);
 		}
 
 		mFragmentManager = getSupportFragmentManager();
@@ -160,7 +162,8 @@ public class FileChooserActivity extends FragmentActivity implements
 	 * Add the initial Fragment with given path.
 	 */
 	private void addFragment() {
-		FileListFragment fragment = FileListFragment.newInstance(mPath, mFilterIncludeExtensions);
+		FileListFragment fragment = FileListFragment.newInstance(mPath,
+				mFilterIncludeExtensions, mSelectFolder);
 		mFragmentManager.beginTransaction()
 				.add(R.id.explorer_fragment, fragment).commit();
 	}
@@ -174,7 +177,8 @@ public class FileChooserActivity extends FragmentActivity implements
 	private void replaceFragment(File file) {
         mPath = file.getAbsolutePath();
 
-        FileListFragment fragment = FileListFragment.newInstance(mPath, mFilterIncludeExtensions);
+		FileListFragment fragment = FileListFragment.newInstance(mPath,
+				mFilterIncludeExtensions, mSelectFolder);
 		mFragmentManager.beginTransaction()
 				.replace(R.id.explorer_fragment, fragment)
 				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)

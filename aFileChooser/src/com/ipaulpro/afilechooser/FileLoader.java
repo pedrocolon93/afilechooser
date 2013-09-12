@@ -44,10 +44,12 @@ public class FileLoader extends AsyncTaskLoader<List<File>> {
 	private FileObserver mFileObserver;
 	
 	private List<File> mData;
-	private String mPath;
-	private ArrayList<String> mFilterIncludeExtensions;
+	private final String mPath;
+	private final ArrayList<String> mFilterIncludeExtensions;
 
-	public FileLoader(Context context, String path, ArrayList<String> filterIncludeExtensions) {
+
+	public FileLoader(Context context, String path,
+			ArrayList<String> filterIncludeExtensions) {
 		super(context);
 		this.mPath = path;
 		this.mFilterIncludeExtensions = filterIncludeExtensions;

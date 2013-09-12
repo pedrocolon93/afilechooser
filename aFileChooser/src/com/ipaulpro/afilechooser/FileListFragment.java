@@ -16,6 +16,10 @@
 
 package com.ipaulpro.afilechooser;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.ListFragment;
@@ -23,10 +27,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.view.View;
 import android.widget.ListView;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Fragment that displays a list of Files in a given path.
@@ -44,7 +44,7 @@ public class FileListFragment extends ListFragment implements
 	private FileListAdapter mAdapter;
 	private String mPath;
 	private ArrayList<String> mFilterIncludeExtensions = new ArrayList<String>();
-
+	private boolean mSelectFolder = false;
 	/**
 	 * Create a new instance with the given file path.
 	 * 
@@ -52,12 +52,13 @@ public class FileListFragment extends ListFragment implements
 	 * @return A new Fragment with the given file path. 
 	 */
 	public static FileListFragment newInstance(String path, ArrayList<String> 
-			filterIncludeExtensions) {
+ filterIncludeExtensions, boolean selectFolder) {
 		FileListFragment fragment = new FileListFragment();
 		Bundle args = new Bundle();
 		args.putString(FileChooserActivity.PATH, path);
 		args.putStringArrayList(FileChooserActivity.EXTRA_FILTER_INCLUDE_EXTENSIONS, 
 				filterIncludeExtensions);
+		args.putBoolean(FileChooserActivity.EXTRA_SELECT_FOLDER, selectFolder);
 		fragment.setArguments(args);
 
 		return fragment;
@@ -66,15 +67,17 @@ public class FileListFragment extends ListFragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		mAdapter = new FileListAdapter(getActivity());
-		mPath = getArguments() != null ? getArguments().getString(
-				FileChooserActivity.PATH) : Environment
-				.getExternalStorageDirectory().getAbsolutePath();
 		if(getArguments() != null){
 			mFilterIncludeExtensions = getArguments().getStringArrayList(
 					FileChooserActivity.EXTRA_FILTER_INCLUDE_EXTENSIONS);
+			mSelectFolder = getArguments().getBoolean(
+					FileChooserActivity.EXTRA_SELECT_FOLDER, false);
 		}
+		mAdapter = new FileListAdapter(getActivity(), mSelectFolder);
+		mPath = getArguments() != null ? getArguments().getString(
+				FileChooserActivity.PATH) : Environment
+				.getExternalStorageDirectory().getAbsolutePath();
+
 	}
 
 	@Override

@@ -16,17 +16,18 @@
 
 package com.ipaulpro.afilechooser;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * List adapter for Files.
@@ -43,9 +44,11 @@ public class FileListAdapter extends BaseAdapter {
 
 	private List<File> mFiles = new ArrayList<File>();
 	private final LayoutInflater mInflater;
+	private final boolean mSelectFolder;
 
-	public FileListAdapter(Context context) {
+	public FileListAdapter(Context context, boolean selectFolder) {
 		mInflater = LayoutInflater.from(context);
+		mSelectFolder = selectFolder;
 	}
 
 	public ArrayList<File> getListItems() {
@@ -88,7 +91,12 @@ public class FileListAdapter extends BaseAdapter {
 		ViewHolder holder = null;
 
 		if (row == null) {
-			row = mInflater.inflate(R.layout.file, parent, false);
+			if (mSelectFolder) {
+				Log.e("TEST", "select folder " + mSelectFolder);
+				row = mInflater.inflate(R.layout.folder_select, parent, false);
+			} else {
+				row = mInflater.inflate(R.layout.file, parent, false);
+			}
 			holder = new ViewHolder(row);
 			row.setTag(holder);
 		} else {
