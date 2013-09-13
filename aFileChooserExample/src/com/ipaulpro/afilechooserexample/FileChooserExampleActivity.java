@@ -18,6 +18,7 @@ package com.ipaulpro.afilechooserexample;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -104,7 +105,17 @@ public class FileChooserExampleActivity extends Activity {
 						// Create a file instance from the URI
 						final File file = FileUtils.getFile(uri);
 						Toast.makeText(FileChooserExampleActivity.this, 
-								"File Selected: "+file.getAbsolutePath(), Toast.LENGTH_LONG).show();
+								"Folder Selected: " + file.getAbsolutePath(),
+								Toast.LENGTH_SHORT).show();
+						List<File> list = FileUtils
+								.getFileList(file.getAbsolutePath(),
+										INCLUDE_EXTENSIONS_LIST);
+						for(File item: list){
+							Toast.makeText(FileChooserExampleActivity.this,
+									"File in folder selected: "
+											+ item.getName(),
+									Toast.LENGTH_SHORT).show();
+						}
 					} catch (Exception e) {
 						Log.e("FileSelectorTestActivity", "File select error", e);
 					}
