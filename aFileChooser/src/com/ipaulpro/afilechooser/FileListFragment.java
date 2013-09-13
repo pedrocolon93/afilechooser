@@ -101,6 +101,7 @@ public class FileListFragment extends ListFragment implements
 		}
 	}
 
+
 	@Override
 	public Loader<List<File>> onCreateLoader(int id, Bundle args) {
 		return new FileLoader(getActivity(), mPath, mFilterIncludeExtensions);

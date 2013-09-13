@@ -20,12 +20,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Context;
-import android.util.Log;
+import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,9 +45,11 @@ public class FileListAdapter extends BaseAdapter {
 	private List<File> mFiles = new ArrayList<File>();
 	private final LayoutInflater mInflater;
 	private final boolean mSelectFolder;
+	private final Activity mActivity;
 
-	public FileListAdapter(Context context, boolean selectFolder) {
-		mInflater = LayoutInflater.from(context);
+	public FileListAdapter(Activity activity, boolean selectFolder) {
+		mActivity = activity;
+		mInflater = LayoutInflater.from(activity);
 		mSelectFolder = selectFolder;
 	}
 
@@ -85,15 +87,20 @@ public class FileListAdapter extends BaseAdapter {
 		return position;
 	}
 
+
+
 	@Override
     public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
 		ViewHolder holder = null;
 
+		// Get the file at the current position
+		final File file = (File) getItem(position);
+
 		if (row == null) {
-			if (mSelectFolder) {
-				Log.e("TEST", "select folder " + mSelectFolder);
+			if (mSelectFolder && file.isDirectory()) {
 				row = mInflater.inflate(R.layout.folder_select, parent, false);
+
 			} else {
 				row = mInflater.inflate(R.layout.file, parent, false);
 			}
@@ -104,8 +111,7 @@ public class FileListAdapter extends BaseAdapter {
 			holder = (ViewHolder) row.getTag();
 		}
 
-		// Get the file at the current position
-		final File file = (File) getItem(position);
+
 
 		// Set the TextView as the file name
 		holder.nameView.setText(file.getName());
@@ -113,17 +119,29 @@ public class FileListAdapter extends BaseAdapter {
 		// If the item is not a directory, use the file icon
 		holder.iconView.setImageResource(file.isDirectory() ? ICON_FOLDER
 				: ICON_FILE);
+		if (holder.checkboxView != null) {
+		holder.checkboxView.setOnClickListener(new View.OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+					((FileChooserActivity) mActivity).finishWithResult(file);
+			}
+		});
+		}
+		
 		return row;
 	}
 
 	static class ViewHolder {
-		TextView nameView;
+		CheckBox checkboxView;
 		ImageView iconView;
+		TextView nameView;
+
 
 		ViewHolder(View row) {
-			nameView = (TextView) row.findViewById(R.id.file_name);
+			checkboxView = (CheckBox) row.findViewById(R.id.file_checkbox);
 			iconView = (ImageView) row.findViewById(R.id.file_icon);
+			nameView = (TextView) row.findViewById(R.id.file_name);
 		}
 	}
 }
