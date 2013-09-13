@@ -89,9 +89,25 @@ Example:
 	
 ```
 
+###Selected a folder
+
+Provide an extra `EXTRA_SELECT_FOLDER` which is an `boolean` define if you can select a folder.
+If this extra is not specified, then you can't select a folder.	
+	
+Example:
+
+```
+	Intent intent = new Intent(this, FileChooserActivity.class);
+	intent.putExtra(FileChooserActivity.EXTRA_SELECT_FOLDER, true);
+	//Use this intent in startActivityForResult()
+````	
 ## Credits
 
 Developed by Paul Burke (iPaulPro) - [paulburke.co](http://paulburke.co/)
+
+Contributor : 
+		* Kiran Rao (curoustechizen) - [curioustechizen.blogspot.fr](http://curioustechizen.blogspot.fr)
+		* Alexis Lecanu (Ravenfeld) - [alexis.lecanu@gmail.com](mailto:alexis.lecanu@gmail.com)
 
 Translations by Thomas Taschauer (TomTasche) - [tomtasche.at](http://tomtasche.at)
 
