@@ -106,7 +106,9 @@ Example:
 Developed by Paul Burke (iPaulPro) - [paulburke.co](http://paulburke.co/)
 
 Contributor : 
+
 		* Kiran Rao (curoustechizen) - [curioustechizen.blogspot.fr](http://curioustechizen.blogspot.fr)
+		
 		* Alexis Lecanu (Ravenfeld) - [alexis.lecanu@gmail.com](mailto:alexis.lecanu@gmail.com)
 
 Translations by Thomas Taschauer (TomTasche) - [tomtasche.at](http://tomtasche.at)
