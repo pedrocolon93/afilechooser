@@ -426,7 +426,7 @@ public class FileUtils {
 					? true: mFilterIncludeExtensions.contains(getExtension(Uri
 					.fromFile(file).toString()));
 			// Return files only (not directories) and skip hidden files
-			return file.isFile() && !fileName.startsWith(HIDDEN_PREFIX) && 
+			return file.isFile() && //!fileName.startsWith(HIDDEN_PREFIX) && 
 					passesExtensionsFilter;
 		}
 		
@@ -441,7 +441,7 @@ public class FileUtils {
 		public boolean accept(File file) {
 			final String fileName = file.getName();
 			// Return files only (not directories) and skip hidden files
-			return file.isFile() && !fileName.startsWith(HIDDEN_PREFIX);
+			return file.isFile();// && !fileName.startsWith(HIDDEN_PREFIX);
 		}
 	};
 	
@@ -454,7 +454,7 @@ public class FileUtils {
 		public boolean accept(File file) {
 			final String fileName = file.getName();
 			// Return directories only and skip hidden directories
-			return file.isDirectory() && !fileName.startsWith(HIDDEN_PREFIX);
+			return file.isDirectory(); //&& !fileName.startsWith(HIDDEN_PREFIX);
 		}
 	};
 	
